@@ -121,8 +121,8 @@
 (() => {
  const $=s=>document.querySelector(s); const state={room:'',name:'',id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random()),peers:new Map(),localStream:null,screenStream:null,role:'student',micOn:false,cameraOn:false,handRaised:false,currentTab:'chat',attendance:[],peer:null,knownPeers:new Map(),mediaCalls:new Map(),drawing:false,lastPoint:null,boardOpen:false,currentFile:null};
  const rtcConfig={iceServers:[{urls:'stun:stun.l.google.com:19302'}]};
- // Alternate signaling server: replace this hostname after deploying signal-server.
- const SIGNAL_HOST='classino-signal.onrender.com';
+ // Alternate signaling server: replace this hostname after deploying signal-serve-
+  const SIGNAL_HOST='classino-signal-new.onrender.com';
  const SIGNAL_PATH='/peerjs';
  const peerOptions={host:SIGNAL_HOST,port:443,path:SIGNAL_PATH,secure:true,key:'peerjs',debug:1,config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'}]}};
  function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>e.classList.remove('show'),3200)}
