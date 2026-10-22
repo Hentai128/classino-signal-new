@@ -1,4 +1,3 @@
-
 const express = require("express");
 const { ExpressPeerServer } = require("peer");
 
@@ -14,9 +13,8 @@ const server = app.listen(PORT, "0.0.0.0", () => {
 });
 
 const peerServer = ExpressPeerServer(server, {
-  path: "/peerjs",
   proxied: true,
   allow_discovery: false
 });
 
-app.use("/", peerServer);
+app.use("/peerjs", peerServer);
