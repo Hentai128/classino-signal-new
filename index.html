@@ -121,10 +121,23 @@
 (() => {
  const $=s=>document.querySelector(s); const state={room:'',name:'',id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random()),peers:new Map(),localStream:null,screenStream:null,role:'student',micOn:false,cameraOn:false,handRaised:false,currentTab:'chat',attendance:[],peer:null,knownPeers:new Map(),mediaCalls:new Map(),drawing:false,lastPoint:null,boardOpen:false,currentFile:null,boardLines:[],teacherRoomId:null,joining:false};
  const rtcConfig={iceServers:[{urls:'stun:stun.l.google.com:19302'}]};
- // باید صریحاً به سرور PeerJS خود کلاسینو وصل شویم؛ در غیر این صورت PeerJS به سرویس پیش‌فرض می‌رود.
- const PEER_SERVER={host:'classino-ki6-classino.runflare.cloud',port:443,path:'/peerjs',secure:true,key:'peerjs',debug:3,config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'}]}};
+ // باید صریحاً به سرور PeerJS خود کلاسینو وصل شویم؛ در غیر این صورت PeerJS به سرویس پیش‌فرض می‌رود',port:443,path:'/peerjs',secure:true,key:'peerjs',debug:3,config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'}]}};
  function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>e.classList.remove('show'),3200)}
- function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ function
+const PEER_SERVER = {
+  host: 'classino-5me-classino.runflare.cloud',
+  port: 443,
+  path: '/peerjs',
+  secure: true,
+  debug: 3,
+  config: {
+    iceServers: [
+      { urls: 'stun:stun.l.google.com:19302' },
+      { urls: 'stun:stun.cloudflare.com:3478' }
+    ]
+  }
+};
+
  function setConnection(s,off=false){$('#connectionLabel').textContent=s;$('#connectionStatus').classList.toggle('is-offline',off);$('#connectionStatus').classList.toggle('is-online',!off)}
  function send(data,except){let n=0;state.peers.forEach((p,id)=>{if(id!==except&&p.conn?.open){try{p.conn.send(data);n++}catch(e){console.warn('send failed',e)}}});return n}
  function updatePeople(){const rows=[`<div class="person-row"><span class="avatar">${esc(state.name.slice(0,1)||'ش')}</span><div>${esc(state.name)}<small>این دستگاه</small></div><span class="person-status">آنلاین</span></div>`];state.peers.forEach(p=>rows.push(`<div class="person-row"><span class="avatar">${esc((p.name||'م').slice(0,1))}</span><div>${esc(p.name||'شرکت‌کننده')}<small>${p.conn?.open?'متصل':'در حال اتصال'}</small></div><span class="person-status">${p.call?'تصویری':'آنلاین'}</span></div>`));$('#peopleList').innerHTML=rows.join('');$('#peopleCount').textContent=String(1+state.peers.size);refreshTeacherParticipants()}
